@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3C4985A8-E1D7-4633-8D79-B2816289F777}</ProjectGuid>
+    <Target>Bin</Target>
+    <Language>C</Language>
+    <Compiler>
+      <Compiler ctype="GccCompiler" />
+    </Compiler>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/pkgconfig/mono.pc" name="Mono" IsProject="false" />
+        <Package file="/usr/lib/pkgconfig/gtk+-2.0.pc" name="GTK+" IsProject="false" />
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\engines</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>libmaigre</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <WarningLevel>All</WarningLevel>
+    <OptimizationLevel>2</OptimizationLevel>
+    <ExtraCompilerArguments>-D_FORTIFY_SOURCE=2
+-ggdb3</ExtraCompilerArguments>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="maigre-gtk-style-generator" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>libmaigre</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="maigre-rc-style.c" />
+    <Compile Include="maigre-theme-module.c" />
+    <Compile Include="maigre-style.c" />
+    <Compile Include="maigre-mono-bridge.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="maigre-rc-style.h" />
+    <None Include="maigre-style.h" />
+    <None Include="maigre-mono-bridge.h" />
+    <None Include="maigre-gtk-style-generator" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maigre", "Maigre\Maigre.csproj", "{1D12C856-6559-4CE2-9DC5-CF2C5CA76D8C}"
+EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libmaigre", "libmaigre\libmaigre.cproj", "{3C4985A8-E1D7-4633-8D79-B2816289F777}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D12C856-6559-4CE2-9DC5-CF2C5CA76D8C}.Debug|x86.ActiveCfg = Debug|x86
+		{1D12C856-6559-4CE2-9DC5-CF2C5CA76D8C}.Debug|x86.Build.0 = Debug|x86
+		{3C4985A8-E1D7-4633-8D79-B2816289F777}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3C4985A8-E1D7-4633-8D79-B2816289F777}.Debug|x86.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Maigre\Maigre.csproj
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,5 @@
+Name: libmaigre
+Description: 
+Version: 0.1
+Libs: -L/home/aaron/src/maigre/engines -lmaigre
+Cflags: -I/home/aaron/src/maigre/libmaigre

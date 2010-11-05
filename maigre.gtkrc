@@ -1,0 +1,35 @@
+gtk_color_scheme = "fg_color:#202020\nbg_color:#D5DAD5\nbase_color:#fff\ntext_color:#3A3A3A\nselected_bg_color:#ffcc00\nselected_fg_color:#fff\ntooltip_bg_color:#F5F5B5\ntooltip_fg_color:#000\nmenu_fg_color:#f6f6f6\nmenu_bg_color:#303030"
+
+gtk-icon-sizes = "gtk-button = 16,16"
+
+style "maigre-default"
+{
+	engine "maigre" {
+	}
+
+	fg[NORMAL] = @fg_color
+	fg[PRELIGHT] = @fg_color
+	fg[SELECTED] = @selected_fg_color
+	fg[ACTIVE] = @fg_color
+	fg[INSENSITIVE] = darker (@bg_color)
+
+	bg[NORMAL] = @bg_color
+	bg[PRELIGHT] = shade (1.02, @bg_color)
+	bg[SELECTED] = @selected_bg_color
+	bg[INSENSITIVE] = @bg_color
+	bg[ACTIVE] = shade (0.85, @bg_color)
+
+	base[NORMAL] = @base_color
+	base[PRELIGHT] = shade (0.95, @bg_color)
+	base[ACTIVE] = shade (0.75, @bg_color)
+	base[SELECTED] = @selected_bg_color
+	base[INSENSITIVE] = @bg_color
+
+	text[NORMAL] = @text_color
+	text[PRELIGHT] = @text_color
+	text[ACTIVE] = @selected_fg_color
+	text[SELECTED] = @selected_fg_color
+	text[INSENSITIVE] = darker (@bg_color)
+}
+
+class "GtkWidget" style "maigre-default"
