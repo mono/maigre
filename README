@@ -1,0 +1,46 @@
+Maigre is a managed GTK theme engine. It allows easily writing GTK themes
+in managed code. Maigre takes care of implementing the GtkRcStyle, GtkStyle,
+and theme module entry points, leaving the theme author to only have to worry
+about rendering code.
+
+Rendering functions (draw_*) that typically are overridden in GtkStyle are
+simply defined in a well-named static class (Maigre.Theme). All methods are
+optional. In addition to Draw functions, this class may optionally implement
+ModuleInit and ModuleExit functions.
+
+An example:
+
+using System;
+using Gtk;
+using Cairo;
+
+namespace Maigre
+{
+    public static class Theme
+    {
+        public static void ModuleInit ()
+        {
+        }
+
+        public static void ModuleExit ()
+        {
+        }
+
+        public static void DrawBox (Gtk.Style style, Gdk.Window window,
+            StateType state_type, ShadowType shadow_type, Gdk.Rectangle area,
+            Widget widget, string detail, int x, int y, int width, int height)
+        {
+            var cr = Gdk.CairoHelper.Create (widget.GdkWindow);
+            switch (detail) {
+                case "hscrollbar":
+                case "vscrollbar": cr.Color = new Cairo.Color (1, 0, 0); break;
+                case "slider":" cr.Color = new Cairo.Color (0, 0, 1); break;
+                case "trough": cr.Color = new Cairo.Color (0, 1, 0); break;
+                default: cr.Color = new Cairo.Color (1, 0, 1); break;
+            }
+            cr.Rectangle (x, y, width, height);
+            cr.Fill ();
+            ((IDisposable)cr).Dispose ();
+        }
+    }
+}
