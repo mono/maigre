@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 
 #include <string.h>
-#include <glib.h>
+#include <gtk/gtk.h>
 
 #include "maigre-mono-bridge.h"
 
@@ -71,6 +71,61 @@ maigre_mono_bridge_mono_assembly_loaded (MonoAssembly *assembly, MaigreMonoBridg
         bridge->glib_getobject != NULL;
 }
 
+static gboolean
+maigre_mono_bridge_load_draw_context (MaigreMonoBridge *bridge)
+{
+    // NOTE: these names must be in the same order as their
+    // corresponding members in the MaigreMonoDrawContext struct
+    static const gchar *names [] = {
+        "<Method>k__BackingField",
+        "<Style>k__BackingField",
+        "<Window>k__BackingField",
+        "<StateType>k__BackingField",
+        "<ShadowType>k__BackingField",
+        "<Area>k__BackingField",
+        "<Widget>k__BackingField",
+        "<Detail>k__BackingField",
+        "<X>k__BackingField",
+        "<Y>k__BackingField",
+        "<Width>k__BackingField",
+        "<Height>k__BackingField",
+        "<Orientation>k__BackingField",
+        "<ExpanderStyle>k__BackingField",
+        "<Layout>k__BackingField",
+        "<UseText>k__BackingField",
+        "<Edge>k__BackingField",
+        "<Step>k__BackingField",
+        "<X1>k__BackingField",
+        "<X2>k__BackingField",
+        "<Y1>k__BackingField",
+        "<Y2>k__BackingField",
+        "<Fill>k__BackingField",
+        "<ArrowType>k__BackingField",
+        NULL
+    };
+
+    MonoClass *klass;
+    gint i;
+
+    if ((bridge->draw_context.klass = mono_class_from_name (
+            bridge->image, "Maigre", "DrawContext")) == NULL) {
+        g_warning ("Maigre.dll assembly does not contain Maigre.DrawContext");
+        return FALSE;
+    }
+
+    klass = bridge->draw_context.klass;
+
+    for (i = 0; names[i] != NULL; i++) {
+        MonoClassField **slot = G_STRUCT_MEMBER_P (&bridge->draw_context, i * sizeof (gpointer));
+        if ((*slot = mono_class_get_field_from_name (klass, names[i])) == NULL) {
+            g_warning ("Maigre.DrawContext does not have a %s field.", names[i]);
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
 MaigreMonoBridge *
 maigre_mono_bridge ()
 {
@@ -106,7 +161,7 @@ maigre_mono_bridge ()
         return bridge;
     }
 
-    bridge->init_success = TRUE;
+    bridge->init_success = maigre_mono_bridge_load_draw_context (bridge);
 
     return bridge;
 }

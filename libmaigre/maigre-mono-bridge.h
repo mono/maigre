@@ -37,6 +37,36 @@
 #include <mono/metadata/object.h>
 #include <mono/metadata/debug-helpers.h>
 
+// NOTE: this structure must reflect the fields
+// in the Maigre.DrawContext managed structure
+typedef struct MaigreMonoDrawContext {
+    MonoClassField *method;
+    MonoClassField *style;
+    MonoClassField *window;
+    MonoClassField *state_type;
+    MonoClassField *shadow_type;
+    MonoClassField *area;
+    MonoClassField *widget;
+    MonoClassField *detail;
+    MonoClassField *x;
+    MonoClassField *y;
+    MonoClassField *width;
+    MonoClassField *height;
+    MonoClassField *orientation;
+    MonoClassField *expander_style;
+    MonoClassField *layout;
+    MonoClassField *use_text;
+    MonoClassField *edge;
+    MonoClassField *step;
+    MonoClassField *x1;
+    MonoClassField *x2;
+    MonoClassField *y1;
+    MonoClassField *y2;
+    MonoClassField *fill;
+    MonoClassField *arrow_type;
+    MonoClass *klass;
+} MaigreMonoDrawContext;
+
 typedef struct MaigreMonoBridge {
     gboolean init_success;
     gboolean assemblies_loaded;
@@ -48,6 +78,8 @@ typedef struct MaigreMonoBridge {
 
     MonoMethod *gdk_rectangle_ctor;
     MonoMethod *glib_getobject;
+
+    MaigreMonoDrawContext draw_context;
 } MaigreMonoBridge;
 
 MaigreMonoBridge *maigre_mono_bridge ();

@@ -31,22 +31,44 @@ using Cairo;
 
 namespace Maigre
 {
+    public struct DrawContext
+    {
+        public string Method { get; private set; }
+        public Gtk.Style Style { get; private set; }
+        public Gdk.Window Window { get; private set; }
+        public Gtk.StateType StateType { get; private set; }
+        public Gtk.ShadowType ShadowType { get; private set; }
+        public Gdk.Rectangle Area { get; private set; }
+        public Gtk.Widget Widget { get; private set; }
+        public string Detail { get; private set; }
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public Gtk.Orientation Orientation { get; private set; }
+        public Gtk.ExpanderStyle ExpanderStyle { get; private set; }
+        public Pango.Layout Layout { get; private set; }
+        public bool UseText { get; private set; }
+        public Gdk.WindowEdge Edge { get; private set; }
+        public int Step { get; private set; }
+        public int X1 { get; private set; }
+        public int X2 { get; private set; }
+        public int Y1 { get; private set; }
+        public int Y2 { get; private set; }
+        public bool Fill { get; private set; }
+        public Gtk.ArrowType ArrowType { get; private set; }
+    }
+
     public static class Theme
     {
-        public static void DrawBox (Gtk.Style style, Gdk.Window window,
-            StateType state_type, ShadowType shadow_type, Gdk.Rectangle area, Widget widget,
-            string detail, int x, int y, int width, int height)
+        public static void DrawBox (DrawContext context)
         {
-            var cr = Gdk.CairoHelper.Create (widget.GdkWindow);
-            switch (detail) {
-                case "hscrollbar":
-                case "vscrollbar": cr.Color = new Cairo.Color (1, 0, 0); break;
-                case "slider": cr.Color = new Cairo.Color (0, 1, 0); break;
-                case "trough": cr.Color = new Cairo.Color (0, 0, 1); break;
+            Console.WriteLine ("{0}:{1} ({2})", context.Method, context.Detail, context.Area);
+            using (var cr = Gdk.CairoHelper.Create (context.Window)) {
+                cr.Color = new Cairo.Color (0, 1, 1);
+                cr.Rectangle (context.X, context.Y, context.Width, context.Height);
+                cr.Fill ();
             }
-            cr.Rectangle (x, y, width, height);
-            cr.Fill ();
-            ((IDisposable)cr).Dispose ();
         }
     }
 }
