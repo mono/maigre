@@ -11,12 +11,6 @@
     <Compiler>
       <Compiler ctype="GccCompiler" />
     </Compiler>
-    <Packages>
-      <Packages>
-        <Package file="/usr/lib/pkgconfig/mono.pc" name="Mono" IsProject="false" />
-        <Package file="/usr/lib/pkgconfig/gtk+-2.0.pc" name="GTK+" IsProject="false" />
-      </Packages>
-    </Packages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,4 +49,19 @@
     <None Include="maigre-mono-bridge.h" />
     <None Include="maigre-gtk-style-generator" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" ExecuteTargetName="test" ParallelProcesses="2">
+          <BuildFilesVar Sync="true" Name="LIBMAIGRE_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar Sync="true" Name="LIBMAIGRE_OTHER" />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

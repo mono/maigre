@@ -1,5 +1,5 @@
 // 
-// Style.cs
+// DrawContext.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,9 +25,6 @@
 // THE SOFTWARE.
 
 using System;
-using Gtk;
-using Gdk;
-using Cairo;
 
 namespace Maigre
 {
@@ -36,8 +33,8 @@ namespace Maigre
         public string Method { get; private set; }
         public Gtk.Style Style { get; private set; }
         public Gdk.Window Window { get; private set; }
-        public Gtk.StateType StateType { get; private set; }
-        public Gtk.ShadowType ShadowType { get; private set; }
+        public Gtk.StateType State { get; private set; }
+        public Gtk.ShadowType Shadow { get; private set; }
         public Gdk.Rectangle Area { get; private set; }
         public Gtk.Widget Widget { get; private set; }
         public string Detail { get; private set; }
@@ -56,19 +53,6 @@ namespace Maigre
         public int Y1 { get; private set; }
         public int Y2 { get; private set; }
         public bool Fill { get; private set; }
-        public Gtk.ArrowType ArrowType { get; private set; }
-    }
-
-    public static class Theme
-    {
-        public static void DrawBox (DrawContext context)
-        {
-            Console.WriteLine ("{0}:{1} ({2})", context.Method, context.Detail, context.Area);
-            using (var cr = Gdk.CairoHelper.Create (context.Window)) {
-                cr.Color = new Cairo.Color (0, 1, 1);
-                cr.Rectangle (context.X, context.Y, context.Width, context.Height);
-                cr.Fill ();
-            }
-        }
+        public Gtk.ArrowType Arrow { get; private set; }
     }
 }

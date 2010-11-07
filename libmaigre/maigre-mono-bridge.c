@@ -80,8 +80,8 @@ maigre_mono_bridge_load_draw_context (MaigreMonoBridge *bridge)
         "<Method>k__BackingField",
         "<Style>k__BackingField",
         "<Window>k__BackingField",
-        "<StateType>k__BackingField",
-        "<ShadowType>k__BackingField",
+        "<State>k__BackingField",
+        "<Shadow>k__BackingField",
         "<Area>k__BackingField",
         "<Widget>k__BackingField",
         "<Detail>k__BackingField",
@@ -100,7 +100,7 @@ maigre_mono_bridge_load_draw_context (MaigreMonoBridge *bridge)
         "<Y1>k__BackingField",
         "<Y2>k__BackingField",
         "<Fill>k__BackingField",
-        "<ArrowType>k__BackingField",
+        "<Arrow>k__BackingField",
         NULL
     };
 
@@ -131,6 +131,8 @@ maigre_mono_bridge ()
 {
     static MaigreMonoBridge *bridge;
 
+    gchar *path;
+
     if (bridge != NULL) {
         return bridge;
     }
@@ -145,11 +147,11 @@ maigre_mono_bridge ()
 
     if (bridge->domain == NULL) {
         mono_config_parse (NULL);
-        bridge->domain = mono_jit_init ("Maigre.dll");
+        bridge->domain = mono_jit_init ("lib/engines/Maigre.dll");
     }
 
     if ((bridge->assembly = mono_domain_assembly_open (
-            bridge->domain, "Maigre.dll")) == NULL ||
+            bridge->domain, "lib/engines/Maigre.dll")) == NULL ||
         (bridge->image = mono_assembly_get_image (bridge->assembly)) == NULL) {
         g_warning ("Could not load Maigre.dll assembly");
         return bridge;

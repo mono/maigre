@@ -16,6 +16,6 @@ Global
 		{3C4985A8-E1D7-4633-8D79-B2816289F777}.Debug|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Maigre\Maigre.csproj
+		StartupItem = libmaigre\libmaigre.cproj
 	EndGlobalSection
 EndGlobal
