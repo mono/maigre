@@ -1,0 +1,8 @@
+*.user*
+*.dll
+*.mdb
+*.pidb
+*.so
+*.o
+
+libmaigre/maigre-style-overrides.c
