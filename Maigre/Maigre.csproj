@@ -38,13 +38,13 @@
     <Compile Include="Cairo\ContextExtensions.cs" />
     <Compile Include="Maigre\Theme.cs" />
     <Compile Include="Cairo\RectangleExtensions.cs" />
-    <Compile Include="Maigre\Theme_VirtualMethods.cs" />
     <Compile Include="Maigre.Osx\OsxTheme.cs" />
+    <Compile Include="Maigre\Theme_Generated.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" BuildTargetName="" CleanTargetName="" SyncReferences="true">
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" ExecuteTargetName="run" SyncReferences="true">
           <BuildFilesVar Sync="true" Name="MAIGRE_SOURCES" />
           <DeployFilesVar />
           <ResourcesVar />
@@ -67,8 +67,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gtkrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Maigre.Osx\" />
   </ItemGroup>
 </Project>

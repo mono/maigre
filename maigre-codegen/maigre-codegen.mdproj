@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>PythonProject</ItemType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{94D14E44-7644-4331-AB34-BA909AE10EC7}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\Debug</OutputPath>
+    <Build>
+      <Build Optimize="false" />
+    </Build>
+    <Runtime>
+      <Runtime Module="maigre-codegen" PythonOptions="">
+        <Interpreter path="/usr/bin/python2.6" ctype="Python26Runtime" />
+      </Runtime>
+    </Runtime>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\Release</OutputPath>
+    <Build>
+      <Build Optimize="true" />
+    </Build>
+    <Runtime>
+      <Runtime Module="main" PythonOptions="">
+        <Interpreter path="/usr/bin/python2.6" ctype="Python26Runtime" />
+      </Runtime>
+    </Runtime>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" BuildTargetName="">
+          <BuildFilesVar />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <None Include="maigre-codegen.py" />
+  </ItemGroup>
+</Project>

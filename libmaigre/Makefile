@@ -5,7 +5,6 @@ LIBMAIGRE_SOURCES =  \
 	maigre-theme-module.c
 
 LIBMAIGRE_OTHER =  \
-	maigre-gtk-style-generator \
 	maigre-mono-bridge.h \
 	maigre-rc-style.h \
 	maigre-style.h
@@ -30,18 +29,15 @@ LIBMAIGRE_OBJECTS = $(LIBMAIGRE_SOURCES:.c=.o)
 
 all: libmaigre.so
 
-libmaigre.so: maigre-style-overrides.c $(LIBMAIGRE_OBJECTS)
+libmaigre.so: codegen $(LIBMAIGRE_OBJECTS)
 	$(CC) $(LIBMAIGRE_LDFLAGS) $(LIBMAIGRE_OBJECTS) -o $@
+
+codegen: ../maigre-codegen/maigre-codegen.py
+	./$<
+	touch maigre-style.c
 
 .c.o:
 	$(CC) -c $(LIBMAIGRE_CFLAGS) $< -o $@
 
-maigre-style-overrides.c: maigre-gtk-style-generator
-	./$<
-	$(CC) -c $(LIBMAIGRE_CFLAGS) maigre-style.c -o maigre-style.o
-
 clean:
 	rm -rf $(LIBMAIGRE_OBJECTS) libmaigre.so maigre-style-overrides.c
-
-test:
-	$(MAKE) -C .. test

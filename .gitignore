@@ -6,3 +6,5 @@
 *.o
 
 libmaigre/maigre-style-overrides.c
+Maigre/Maigre/Theme_Generated.cs
+lib/
