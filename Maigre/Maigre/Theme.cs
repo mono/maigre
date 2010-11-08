@@ -1,5 +1,5 @@
 // 
-// Style.cs
+// Theme.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -31,6 +31,24 @@ namespace Maigre
     public abstract partial class Theme
     {
         public Theme ()
+        {
+        }
+
+        private void ProxyModuleInit ()
+        {
+            ModuleInit ();
+        }
+
+        protected virtual void ModuleInit ()
+        {
+        }
+
+        private void ProxyModuleExit ()
+        {
+            ModuleExit ();
+        }
+
+        protected virtual void ModuleExit ()
         {
         }
 

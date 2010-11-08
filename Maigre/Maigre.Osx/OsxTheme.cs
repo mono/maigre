@@ -31,6 +31,11 @@ namespace Maigre.Osx
 {
     public class OsxTheme : Theme
     {
+        protected override void ModuleInit ()
+        {
+            Console.WriteLine ("OsxTheme::ModuleInit");
+        }
+
         protected override void DrawBox ()
         {
             switch (Detail) {
