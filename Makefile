@@ -1,10 +1,8 @@
 all:
-	$(MAKE) -C maigre-codegen
 	$(MAKE) -C libmaigre
 	$(MAKE) -C Maigre
 
 clean:
-	$(MAKE) -C maigre-codegen clean
 	$(MAKE) -C libmaigre clean
 	$(MAKE) -C Maigre clean
 	rm -rf lib

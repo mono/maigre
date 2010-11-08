@@ -104,11 +104,7 @@ for item in draw_context:
         line = item[0] + ' ' + item[1]
     out.write ('    %s;\n' % line)
 
-out.write ('''} MaigreDrawContext;
-
-static gpointer *native_draw_methods[%d];
-
-''' % (len (methods) + 1))
+out.write ('} MaigreDrawContext;\n')
 
 method_index = 0
 for method in methods:
@@ -143,7 +139,7 @@ for method in methods:
     static MonoMethod *managed_method = NULL;
 
     MaigreMonoBridge *bridge;
-    MaigreDrawContext draw_context, *dcp;
+    MaigreDrawContext draw_context, *draw_context_ptr;
     gpointer args[1];
 ''')
 
@@ -174,8 +170,8 @@ for method in methods:
         out.write ('    draw_context.%s = %s;\n' % (var, var))
 
     out.write ('''
-    dcp = &draw_context;
-    args[0] = &dcp;
+    draw_context_ptr = &draw_context;
+    args[0] = &draw_context_ptr;
 
     if (*(guchar *)mono_object_unbox (mono_runtime_invoke (
         managed_method, bridge->theme_object, args, NULL)) == 0) {
@@ -201,14 +197,12 @@ for method in methods:
 
 out.write ('''
 static void
-maigre_style_init_method_map ()
+maigre_style_override_methods (GtkStyleClass *klass)
 {
 ''')
-method_index = 0
 for method in methods:
-    out.write ('    native_draw_methods[%d] = (gpointer)maigre_style_%s;\n' \
-        % (method_index, method[0]))
-    method_index += 1
+    out.write ('    klass->%s = maigre_style_%s;\n' \
+        % (method[0], method[0]))
 out.write ('}')
 
 
@@ -299,8 +293,7 @@ for type, name, gobject_type, native_name in managed_draw_context:
                 : null;
 ''' % (native_name, name, gobject_type, name))
 
-out.write ('''
-        }
+out.write ('''        }
 
 ''')
 

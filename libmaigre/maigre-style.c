@@ -51,21 +51,5 @@ maigre_style_init (MaigreStyle *maigre)
 static void
 maigre_style_class_init (MaigreStyleClass *klass)
 {
-    MaigreMonoBridge *bridge;
-    gint i;
-
-    bridge = maigre_mono_bridge ();
-    if (!bridge->init_success) {
-        return;
-    }
-
-    maigre_style_init_method_map ();
-
-    for (i = 0; native_draw_methods[i] != NULL; i++) {
-        DrawFnptr *slot = G_STRUCT_MEMBER_P (
-            GTK_STYLE_CLASS (klass),
-            G_STRUCT_OFFSET (GtkStyleClass, draw_hline) + i * sizeof (gpointer)
-        );
-        *slot = (DrawFnptr)native_draw_methods[i];
-    }
+    maigre_style_override_methods (GTK_STYLE_CLASS (klass));
 }
