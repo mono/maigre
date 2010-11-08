@@ -56,6 +56,28 @@ namespace Cairo
         }
 
         public static void RoundedRectangle (this Cairo.Context cr,
+            Cairo.Rectangle rect, double r)
+        {
+            RoundedRectangle (cr, rect.X, rect.Y, rect.Width, rect.Height,
+                r, Corner.All, false);
+        }
+
+        public static void RoundedRectangle (this Cairo.Context cr,
+            Cairo.Rectangle rect, double r, Corner corners)
+        {
+            RoundedRectangle (cr, rect.X, rect.Y, rect.Width, rect.Height,
+                r, corners, false);
+        }
+
+        public static void RoundedRectangle (this Cairo.Context cr,
+            Cairo.Rectangle rect, double r, Corner corners,
+            bool topBottomFallsThrough)
+        {
+            RoundedRectangle (cr, rect.X, rect.Y, rect.Width, rect.Height,
+                r, corners, topBottomFallsThrough);
+        }
+
+        public static void RoundedRectangle (this Cairo.Context cr,
             double x, double y, double w, double h, double r)
         {
             RoundedRectangle (cr, x, y, w, h, r, Corner.All, false);
@@ -137,6 +159,16 @@ namespace Cairo
         public static void SetColor (this Cairo.Context cr, Gdk.Color color)
         {
             cr.Color = color.ToCairoColor ();
+        }
+
+        public static void Translate (this Cairo.Context cr, Cairo.Rectangle rect)
+        {
+            cr.Translate (rect.X, rect.Y);
+        }
+
+        public static void Translate (this Cairo.Context cr, Cairo.Point point)
+        {
+            cr.Translate (point.X, point.Y);
         }
     }
 }

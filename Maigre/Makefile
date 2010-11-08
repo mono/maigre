@@ -2,8 +2,10 @@ MAIGRE_SOURCES =  \
 	Cairo/ColorExtensions.cs \
 	Cairo/ContextExtensions.cs \
 	Cairo/Corner.cs \
-	Maigre/DrawContext.cs \
-	Maigre/Theme.cs
+	Cairo/RectangleExtensions.cs \
+	Maigre.Osx/OsxTheme.cs \
+	Maigre/Theme.cs \
+	Maigre/Theme_VirtualMethods.cs
 
 MAIGRE_OTHER = gtkrc
 

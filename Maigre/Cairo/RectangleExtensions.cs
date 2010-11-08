@@ -1,5 +1,5 @@
 // 
-// Style.cs
+// RectangleExtensions.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -23,20 +23,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
-namespace Maigre
+namespace Cairo
 {
-    public abstract partial class Theme
+    public static class RectangleExtensions
     {
-        public Theme ()
+        public static double Left (this Rectangle rect)
         {
+            return rect.X;
         }
 
-        public static Theme Create ()
+        public static double Top (this Rectangle rect)
         {
-            return new Maigre.Osx.OsxTheme ();
+            return rect.Y;
+        }
+
+        public static double Bottom (this Rectangle rect)
+        {
+            return rect.Y + rect.Height;
+        }
+
+        public static double Right (this Rectangle rect)
+        {
+            return rect.X + rect.Width;
         }
     }
 }
+

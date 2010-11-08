@@ -38,6 +38,7 @@ libmaigre.so: maigre-style-overrides.c $(LIBMAIGRE_OBJECTS)
 
 maigre-style-overrides.c: maigre-gtk-style-generator
 	./$<
+	$(CC) -c $(LIBMAIGRE_CFLAGS) maigre-style.c -o maigre-style.o
 
 clean:
 	rm -rf $(LIBMAIGRE_OBJECTS) libmaigre.so maigre-style-overrides.c

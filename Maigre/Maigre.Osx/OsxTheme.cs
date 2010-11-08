@@ -1,5 +1,5 @@
 // 
-// Style.cs
+// OsxTheme.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -25,18 +25,25 @@
 // THE SOFTWARE.
 
 using System;
+using Cairo;
 
-namespace Maigre
+namespace Maigre.Osx
 {
-    public abstract partial class Theme
+    public class OsxTheme : Theme
     {
-        public Theme ()
+        protected override void DrawBox ()
         {
-        }
-
-        public static Theme Create ()
-        {
-            return new Maigre.Osx.OsxTheme ();
+            switch (Detail) {
+                case "button":
+                    var grad = new LinearGradient (0, 0, 0, Height);
+                    grad.AddColorStop (0, ColorExtensions.FromRgb (0xeeeeee));
+                    grad.AddColorStop (1, ColorExtensions.FromRgb (0xcccccc));
+                    Cr.RoundedRectangle (0, 0, Width, Height, 3);
+                    Cr.Pattern = grad;
+                    grad.Destroy ();
+                    Cr.Fill ();
+                    break;
+            }
         }
     }
 }

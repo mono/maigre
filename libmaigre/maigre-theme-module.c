@@ -46,12 +46,11 @@ theme_init (GTypeModule *module)
     }
 
     maigre_rc_style_register_types (module);
-    maigre_style_register_types (module);
 
-    if ((init_method =
+    /*if ((init_method =
         mono_class_get_method_from_name (bridge->theme_class, "ModuleInit", 0)) != NULL) {
         mono_runtime_invoke (init_method, NULL, NULL, NULL);
-    }
+    }*/
 }
 
 G_MODULE_EXPORT void
@@ -60,10 +59,10 @@ theme_exit ()
     MonoMethod *exit_method;
     MaigreMonoBridge *bridge = maigre_mono_bridge ();
 
-    if (bridge->init_success && (exit_method =
+    /*if (bridge->init_success && (exit_method =
         mono_class_get_method_from_name (bridge->theme_class, "ModuleExit", 0)) != NULL) {
         mono_runtime_invoke (exit_method, NULL, NULL, NULL);
-    }
+    }*/
 }
 
 G_MODULE_EXPORT GtkRcStyle *

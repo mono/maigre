@@ -37,7 +37,9 @@
     <Compile Include="Cairo\ColorExtensions.cs" />
     <Compile Include="Cairo\ContextExtensions.cs" />
     <Compile Include="Maigre\Theme.cs" />
-    <Compile Include="Maigre\DrawContext.cs" />
+    <Compile Include="Cairo\RectangleExtensions.cs" />
+    <Compile Include="Maigre\Theme_VirtualMethods.cs" />
+    <Compile Include="Maigre.Osx\OsxTheme.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -65,5 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gtkrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Maigre.Osx\" />
   </ItemGroup>
 </Project>
