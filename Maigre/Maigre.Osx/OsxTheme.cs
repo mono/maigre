@@ -34,19 +34,35 @@ namespace Maigre.Osx
         protected override void DrawBox ()
         {
             switch (Detail) {
-                case "button":
-                    var grad = new LinearGradient (0, 0, 0, Height);
-                    grad.AddColorStop (0, ColorExtensions.FromRgb (0xeeeeee));
-                    grad.AddColorStop (1, ColorExtensions.FromRgb (0xcccccc));
-                    Cr.RoundedRectangle (0, 0, Width, Height, 3);
-                    Cr.Pattern = grad;
-                    grad.Destroy ();
-                    Cr.Fill ();
-                    break;
-                default:
-                    base.DrawBox ();
-                    break;
+                case "button": DrawButton (); break;
+                default: base.DrawBox (); break;
             }
+        }
+
+        private void DrawButton ()
+        {
+            Cr.RoundedRectangle (Shape, 3);
+            var grad = new LinearGradient (0, 0, 0, Height);
+            grad.AddColorStop (StateType == Gtk.StateType.Active ? 1 : 0,
+                ColorExtensions.FromRgb (0xeeeeee));
+            grad.AddColorStop (StateType == Gtk.StateType.Active ? 0 : 1,
+                ColorExtensions.FromRgb (0xcccccc));
+            Cr.FillPatternDestroy (grad, true);
+
+            Cr.RoundedRectangle (Shape.Inset (0.5), 3);
+            Cr.LineWidth = 1;
+            Cr.Color = ColorExtensions.FromRgb (0x999999);
+            Cr.Stroke ();
+        }
+
+        protected override void DrawFocus ()
+        {
+            Cr.RoundedRectangle (Shape, 2);
+            Cr.Color = ColorExtensions.FromRgba (0x00000011);
+            Cr.Fill ();
+            Cr.RoundedRectangle (Shape.Inset (0.5), 2);
+            Cr.Color = ColorExtensions.FromRgba (0x00000005);
+            Cr.Stroke ();
         }
     }
 }

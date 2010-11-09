@@ -161,6 +161,22 @@ namespace Cairo
             cr.Color = color.ToCairoColor ();
         }
 
+        public static void FillPatternDestroy (this Cairo.Context cr, Cairo.Pattern pattern)
+        {
+            FillPatternDestroy (cr, pattern, false);
+        }
+
+        public static void FillPatternDestroy (this Cairo.Context cr, Cairo.Pattern pattern, bool preserve)
+        {
+            cr.Pattern = pattern;
+            if (preserve) {
+                cr.FillPreserve ();
+            } else {
+                cr.Fill ();
+            }
+            pattern.Destroy ();
+        }
+
         public static void Translate (this Cairo.Context cr, Cairo.Rectangle rect)
         {
             cr.Translate (rect.X, rect.Y);

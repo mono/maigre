@@ -359,9 +359,11 @@ class ManagedCodeGenerator (CodeGenerator):
             private ParentVTable parent_vtable;
 
             private Cairo.Context cr;
-            public Cairo.Context Cr {
+            protected Cairo.Context Cr {
                 get { return cr; }
             }
+
+            protected Cairo.Rectangle Shape { get; private set; }
 
         ''', 2)
 
@@ -389,6 +391,8 @@ class ManagedCodeGenerator (CodeGenerator):
             private void LoadContext (IntPtr ctxPtr)
             {
                 context = (DrawContext)Marshal.PtrToStructure (ctxPtr, typeof (DrawContext));
+
+                Shape = new Cairo.Rectangle (0, 0, Width, Height);
 
         ''', 2)
 

@@ -48,6 +48,12 @@ namespace Cairo
         {
             return rect.X + rect.Width;
         }
+
+        public static Rectangle Inset (this Rectangle rect, double size)
+        {
+            return new Rectangle (rect.X + size, rect.Y + size,
+                rect.Width - 2 * size, rect.Height - 2 * size);
+        }
     }
 }
 
