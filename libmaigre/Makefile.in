@@ -9,22 +9,9 @@ LIBMAIGRE_OTHER =  \
 	maigre-rc-style.h \
 	maigre-style.h
 
-PC_DEPS = \
-	mono \
-	gtk+-2.0
-
 CC = gcc
-
-LIBMAIGRE_CFLAGS = \
-	-Wall -O2 -ggdb3 \
-	$(shell pkg-config --cflags $(PC_DEPS)) \
-	$(CFLAGS)
-
-LIBMAIGRE_LDFLAGS = \
-	-shared \
-	$(shell pkg-config --libs $(PC_DEPS)) \
-	$(LDFLAGS)
-
+LIBMAIGRE_CFLAGS = -Wall -O2 -ggdb3 @PKG_CFLAGS@ $(CFLAGS)
+LIBMAIGRE_LDFLAGS = -shared @PKG_LIBS@ $(LDFLAGS)
 LIBMAIGRE_OBJECTS = $(LIBMAIGRE_SOURCES:.c=.o)
 
 all: libmaigre.so

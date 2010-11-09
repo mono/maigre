@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -e
+
+function check_start {
+	echo -n "Checking for $1... "
+}
+
+function check_fail {
+	echo no
+	echo
+	echo "$1"
+	exit 1
+}
+
+function check_success {
+	echo yes
+}
+
+check_start "GTK+"
+pkg-config --atleast-version 2.12 gtk+-2.0 ||
+	check_fail "Please install gtk+-2.0 >= 2.12" &&
+	check_success
+
+check_start "Mono runtime"
+pkg-config --atleast-version 2.6 mono ||
+	check_fail "Please install mono-devel >= 2.6" &&
+	check_success
+
+check_start "gmcs compiler"
+gmcs --help &>/dev/null ||
+	check_fail "Please install gmcs" &&
+	check_success
+
+check_start "Gtk#"
+pkg-config --atleast-version 2.12 gtk-sharp-2.0 ||
+	check_fail "Please install gtk-sharp-2.0 >= 2.12" &&
+	check_success
+
+check_start "gcc"
+gcc --help &>/dev/null ||
+	check_fail "Please install gcc" &&
+	check_success
+
+check_start "Python runtime"
+python --help &>/dev/null ||
+	check_fail "Please install python" &&
+	check_success
+
+check_start "Python mako module"
+python -c 'import mako' &>/dev/null ||
+	check_fail "Please install python-mako." &&
+	check_success
+
+function generate {
+	echo "Created $1"
+	packages="mono gtk+-2.0"
+	sed \
+		"s,@PKG_CFLAGS@,$(pkg-config --cflags $packages),g;
+		s,@PKG_LIBS@,$(pkg-config --libs $packages),g" \
+		< $1.in \
+		> $1
+	{ cat <<EOF
+
+distclean: clean
+	rm -f Makefile
+EOF
+} >> $1
+}
+
+generate Makefile
+generate libmaigre/Makefile
+generate Maigre/Makefile
+
+echo
+echo "Success. You may now run make."
