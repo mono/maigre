@@ -202,8 +202,6 @@ parser = GtkStyleHeaderParser ()
 parser.blacklist = ['draw_polygon']
 parser.parse ()
 
-print sys.argv[2]
-
 generator = CodeGenerator (parser)
 result = generator.generate (sys.argv[1])
 with open (sys.argv[2], 'w') as out:
