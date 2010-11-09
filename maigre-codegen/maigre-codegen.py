@@ -176,22 +176,13 @@ class CodeGenerator:
         self.stream.write (string)
 
     def ws (self, string, indent = 0):
-        lines = string.split ('\n')
-        depth = -1
+        import textwrap
         i = 0
+        lines = textwrap.dedent (string).split ('\n')
         for line in lines:
-            if depth < 0:
-                if len (line) == 0:
-                    continue
-                depth = 0
-                for c in line:
-                    if c == ' ':
-                        depth += 1
-                    else:
-                        break
-            if i == len (lines) - 2 and len (line.strip ()) == 0:
-                return
-            self.wl (line[depth:], indent)
+            if (i == 0 or i >= len (lines) - 2) and line.strip () == '':
+                continue
+            self.wl (line, indent)
             i += 1
 
     def indent (self, level = 0):
@@ -200,27 +191,25 @@ class CodeGenerator:
             s += ' '
         return s
 
-    def wrap (self, string, indent = 1, max_width = 55, delim = ','):
+    def wrap (self, string, indent = 0, subsequent_indent = 1, max_width = 70):
+        from textwrap import TextWrapper
+        import re
+        TextWrapper.wordsep_re = re.compile (r'\s*(\,)')
+        wrapper = TextWrapper (width = max_width)
         wrapped = ''
-        line = ''
-        line_count = 0
         i = 0
-        segments = string.split (delim)
-        for segment in segments:
-            if (len (line) + len (segment) > max_width):
-                if len (wrapped) > 0:
-                    wrapped += self.indent (indent)
-                wrapped += line.strip () + '\n'
-                line = ''
-            line += segment
-            if i < len (segments) - 1:
-                line += delim
-            i += 1
-        if len (line) > 0:
-            line = self.indent (indent) + line.strip ()
-        else:
+        for line in wrapper.wrap (string):
             line = line.strip ()
-        return wrapped + line
+            if i > 0:
+                if line[0] == ',':
+                    line = line[1:].strip ()
+                    wrapped += ',\n'
+                else:
+                    wrapped += '\n'
+                wrapped += self.indent (subsequent_indent)
+            wrapped += line
+            i += 1
+        return self.indent (indent) + wrapped.strip ()
 
 class NativeCodeGenerator (CodeGenerator):
     def generate (self):
@@ -236,11 +225,17 @@ class NativeCodeGenerator (CodeGenerator):
         self.wl ('} MaigreDrawContext;')
         self.wl ()
 
+        self.wl ('typedef struct MaigreParentVTable {')
+        for method in self.parser.methods:
+            self.wl ('gpointer %s;' % method.native_name, 1)
+        self.wl ('} MaigreParentVTable;')
+        self.wl ()
+
         for method in self.parser.methods:
             self.wl ('static void')
             self.wl (self.wrap ('maigre_style_%s (%s)' % \
-                (method.native_name, ', '.join (method.to_native_signature ()))
-            ))
+                (method.native_name, ', '.join (method.to_native_signature ())),
+                0, 1))
             self.ws ('''
             {
                 static MonoMethod *managed_method = NULL;
@@ -273,32 +268,47 @@ class NativeCodeGenerator (CodeGenerator):
             self.ws ('''
                 draw_context_ptr = &draw_context;
                 args[0] = &draw_context_ptr;
-
-                if (*(guchar *)mono_object_unbox (mono_runtime_invoke (
-                    managed_method, bridge->theme_object, args, NULL)) == 0) {
-                    GTK_STYLE_CLASS (maigre_style_parent_class)->%s (
-            ''' % method.native_name, 1)
-            i = 0
-            for arg in method.arguments:
-                self.w (arg.native_name, 3)
-                if i < len (method.arguments) - 1:
-                    self.w (',')
-                i += 1
-                self.wl ()
-            self.wl (');', 2)
-
-            self.wl ('}', 1)
-            self.wl ('}')
+                mono_runtime_invoke (managed_method, bridge->theme_object, args, NULL);
+            }
+            ''')
             self.wl ()
 
         self.ws ('''
             static void
             maigre_style_override_methods (GtkStyleClass *klass)
             {
+                MaigreMonoBridge *bridge;
+                MonoMethod *load_parent_vtable_method;
+                MaigreParentVTable parent_vtable, *parent_vtable_ptr;
+                gpointer args[1];
+
+                bridge = maigre_mono_bridge ();
+                if (bridge == NULL || !bridge->init_success) {
+                    return;
+                } else if ((load_parent_vtable_method = mono_class_get_method_from_name (
+                        bridge->theme_class, "LoadParentVTable", 1)) == NULL) {
+                    g_warning ("Maigre.Theme does not contain a LoadParentVTable method.");
+                    return;
+                }
+
         ''')
+
+        for method in self.parser.methods:
+            self.wl ('parent_vtable.%s = GTK_STYLE_CLASS (maigre_style_parent_class)->%s;' \
+                % (method.native_name, method.native_name), 1)
+
+        self.wl ()
+        self.ws ('''
+            parent_vtable_ptr = &parent_vtable;
+            args[0] = &parent_vtable_ptr;
+            mono_runtime_invoke (load_parent_vtable_method, bridge->theme_object, args, NULL);
+        ''', 1)
+        self.wl ()
+
         for method in self.parser.methods:
             self.wl ('klass->%s = maigre_style_%s;' % (method.native_name,
                 method.native_name), 1)
+
         self.wl ('}')
 
 class ManagedCodeGenerator (CodeGenerator):
@@ -326,8 +336,27 @@ class ManagedCodeGenerator (CodeGenerator):
         self.wl ()
 
         self.ws ('''
+
+            [StructLayout (LayoutKind.Sequential)]
+            private struct ParentVTable
+            {''', 2)
+
+        for method in self.parser.methods:
+            self.wl ('public %sHandler %s;' % \
+                (method.managed_name, method.managed_name), 3)
+
+        self.wl ('}', 2)
+        self.wl ()
+
+        for method in self.parser.methods:
+            self.wl (self.wrap ('private delegate void %sHandler (%s);' % \
+                (method.managed_name, ', '.join (method.to_managed_signature ())), 2, 3))
+            self.wl ()
+
+        self.wl ()
+        self.ws ('''
             private DrawContext context;
-            private bool gtk_style_draw_call_parent;
+            private ParentVTable parent_vtable;
 
             private Cairo.Context cr;
             public Cairo.Context Cr {
@@ -352,6 +381,11 @@ class ManagedCodeGenerator (CodeGenerator):
                 self.wl ()
 
         self.ws ('''
+            private void LoadParentVTable (IntPtr vtablePtr)
+            {
+                parent_vtable = (ParentVTable)Marshal.PtrToStructure (vtablePtr, typeof (ParentVTable));
+            }
+
             private void LoadContext (IntPtr ctxPtr)
             {
                 context = (DrawContext)Marshal.PtrToStructure (ctxPtr, typeof (DrawContext));
@@ -386,14 +420,24 @@ class ManagedCodeGenerator (CodeGenerator):
             self.ws ('''
                 protected virtual void %s ()
                 {
-                    gtk_style_draw_call_parent = true;
+                    if (parent_vtable.%s != null) {
+                        parent_vtable.%s (
+            ''' % (method.managed_name, method.managed_name, method.managed_name), 2)
+            i = 0
+            for arg in method.arguments:
+                self.w ('context.%s' % arg.managed_name, 5)
+                if i < len (method.arguments) - 1:
+                    self.w (',')
+                i += 1
+                self.wl ()
+            self.ws ('''
+                        );
+                    }
                 }
 
-                private bool Proxy%s (IntPtr ctxPtr)
+                private void Proxy%s (IntPtr ctxPtr)
                 {
                     LoadContext (ctxPtr);
-
-                    gtk_style_draw_call_parent = false;
 
                     using (cr = Gdk.CairoHelper.Create (Window)) {
                         cr.Translate (X, Y);
@@ -401,10 +445,8 @@ class ManagedCodeGenerator (CodeGenerator):
                     }
 
                     cr = null;
-
-                    return !gtk_style_draw_call_parent;
                 }
-            ''' % (method.managed_name, method.managed_name, method.managed_name), 2)
+            ''' % (method.managed_name, method.managed_name), 2)
             if i < len (self.parser.methods) - 1:
                 self.wl ()
                 i += 1

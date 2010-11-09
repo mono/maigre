@@ -31,11 +31,6 @@ namespace Maigre.Osx
 {
     public class OsxTheme : Theme
     {
-        protected override void ModuleInit ()
-        {
-            Console.WriteLine ("OsxTheme::ModuleInit");
-        }
-
         protected override void DrawBox ()
         {
             switch (Detail) {
@@ -47,6 +42,9 @@ namespace Maigre.Osx
                     Cr.Pattern = grad;
                     grad.Destroy ();
                     Cr.Fill ();
+                    break;
+                default:
+                    base.DrawBox ();
                     break;
             }
         }
