@@ -38,6 +38,7 @@ AC_SUBST(GTK_VERSION)
 
 AC_CONFIG_FILES([
 	Makefile
+	maigre-codegen/Makefile
 	libmaigre/Makefile
 	Maigre/Makefile
 ])

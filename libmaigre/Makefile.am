@@ -18,9 +18,10 @@ MAIGRE_SRC = \
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libmaigre.la
 
-libmaigre_la_SOURCES = $(MAIGRE_SRC) maigre-style.c
+libmaigre_la_SOURCES = $(MAIGRE_SRC)
+nodist_libmaigre_la_SOURCES = maigre-style.c
 libmurrine_la_LDFLAGS = -module -avoid-version -no-undefined
 libmurrine_la_LIBADD = $(MONO_LIBS) $(GTK_LIBS)
 
 maigre-style.c: maigre-style.template.c
-	@echo "  GEN    $@"; ../maigre-codegen/maigre-codegen.py $< $@
+	@echo "  GEN    $@"; $(top_srcdir)/maigre-codegen/maigre-codegen.py $< $@

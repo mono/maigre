@@ -1,4 +1,5 @@
 SUBDIRS = \
+	maigre-codegen \
 	libmaigre \
 	Maigre
 
