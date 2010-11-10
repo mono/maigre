@@ -46,11 +46,11 @@ maigre_mono_bridge ()
 
     if (bridge->domain == NULL) {
         mono_config_parse (NULL);
-        bridge->domain = mono_jit_init ("lib/engines/Maigre.dll");
+        bridge->domain = mono_jit_init (".run/engines/Maigre.dll");
     }
 
     if ((bridge->assembly = mono_domain_assembly_open (
-            bridge->domain, "lib/engines/Maigre.dll")) == NULL ||
+            bridge->domain, ".run/engines/Maigre.dll")) == NULL ||
         (bridge->image = mono_assembly_get_image (bridge->assembly)) == NULL) {
         g_warning ("Could not load Maigre.dll assembly");
         return bridge;

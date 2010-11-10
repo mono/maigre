@@ -20,7 +20,7 @@ Makefile.in
 /missing
 .libs/
 .deps/
-lib/
 
+/.run/
 libmaigre/maigre-style.c
 Maigre/Maigre_Theme.cs

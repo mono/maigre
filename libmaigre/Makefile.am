@@ -23,8 +23,8 @@ engine_LTLIBRARIES = libmaigre.la
 
 libmaigre_la_SOURCES = $(MAIGRE_SRC)
 nodist_libmaigre_la_SOURCES = maigre-style.c
-libmurrine_la_LDFLAGS = -module -avoid-version -no-undefined
-libmurrine_la_LIBADD = $(MONO_LIBS) $(GTK_LIBS)
+libmaigre_la_LDFLAGS = -module -avoid-version -no-undefined
+libmaigre_la_LIBADD = $(MONO_LIBS) $(GTK_LIBS)
 
 maigre-style.c: maigre-style.template.c
 	@echo "  GEN    $@"; $(top_srcdir)/maigre-codegen/maigre-codegen.py $< $@

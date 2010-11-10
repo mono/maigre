@@ -18,3 +18,15 @@ MAINTAINERCLEANFILES = \
 	ltmain.sh \
 	missing \
 	mkinstalldirs
+
+.PHONY: run
+
+RUNDIR=$(top_builddir)/.run
+
+run:
+	rm -rf $(RUNDIR)
+	mkdir -p $(RUNDIR)/engines
+	cp -a libmaigre/.libs/libmaigre.so Maigre/Maigre.dll $(RUNDIR)/engines
+	cp Maigre/gtkrc $(RUNDIR)
+	GTK_PATH=$(RUNDIR) GTK2_RC_FILES=$(RUNDIR)/gtkrc gtk-demo
+
