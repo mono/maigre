@@ -28,9 +28,26 @@ if test x$PYTHON = x; then
 	AC_MSG_ERROR([Could not find 'python'])
 fi
 
-PKG_CHECK_MODULES(GTK_SHARP, gtk-sharp-2.0 >= 2.12)
+AC_MSG_CHECKING([for python mako])
+if ! $PYTHON -c 'import mako' &>/dev/null; then
+	AC_MSG_ERROR([not found; install the Python mako module (python-mako)])
+fi
+AC_MSG_RESULT([yes])
 
-PKG_CHECK_MODULES(MONO, mono >= 2.6)
+PKG_CHECK_MODULES(MONO_2_8, mono-2 >= 2.8,
+	[have_mono_2_8=yes], [have_mono_2_8=no])
+if test "x$have_mono_2_8" = xyes; then
+	MONO_CFLAGS=$MONO_2_8_CFLAGS
+	MONO_LIBS=$MONO_2_8_CFLAGS
+else
+	PKG_CHECK_MODULES(MONO_2_6, mono >= 2.6)
+	MONO_CFLAGS=$MONO_2_6_CFLAGS
+	MONO_LIBS=$MONO_2_6_LIBS
+fi
+AC_SUBST(MONO_CFLAGS)
+AC_SUBST(MONO_LIBS)
+
+PKG_CHECK_MODULES(GTK_SHARP, gtk-sharp-2.0 >= 2.12)
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.12)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
