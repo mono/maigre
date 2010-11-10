@@ -26,5 +26,5 @@ nodist_libmaigre_la_SOURCES = maigre-style.c
 libmaigre_la_LDFLAGS = -module -avoid-version -no-undefined
 libmaigre_la_LIBADD = $(MONO_LIBS) $(GTK_LIBS)
 
-maigre-style.c: maigre-style.template.c
+maigre-style.c: maigre-style.template.c $(top_srcdir)/maigre-codegen/maigre-codegen.py
 	@echo "  GEN    $@"; $(top_srcdir)/maigre-codegen/maigre-codegen.py $< $@
