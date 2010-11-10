@@ -1,12 +1,11 @@
-MAIGRE_SOURCES = \
+MAIGRE_SOURCES =  \
 	Cairo/ColorExtensions.cs \
 	Cairo/ContextExtensions.cs \
 	Cairo/Corner.cs \
 	Cairo/RectangleExtensions.cs \
 	Maigre.Osx/OsxTheme.cs
 
-MAIGRE_TEMPLATE_SOURCES_IN = \
-	Maigre/Theme_Template.cs
+MAIGRE_TEMPLATE_SOURCES_IN = Maigre/Theme_Template.cs
 
 MAIGRE_TEMPLATE_SOURCES_OUT = \
 	Maigre_Theme.cs

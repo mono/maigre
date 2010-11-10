@@ -7,13 +7,16 @@ INCLUDES = \
 	$(MONO_CFLAGS) \
 	$(GTK_CFLAGS)
 
-MAIGRE_SRC = \
+MAIGRE_SRC =  \
 	maigre-mono-bridge.c \
-	maigre-mono-bridge.h \
 	maigre-rc-style.c \
+	maigre-theme-module.c
+
+MAIGRE_OTHER =  \
+	maigre-mono-bridge.h \
 	maigre-rc-style.h \
 	maigre-style.h \
-	maigre-theme-module.c
+	maigre-style.template.c
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libmaigre.la
