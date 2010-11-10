@@ -23,4 +23,6 @@ Makefile.in
 
 /.run/
 libmaigre/maigre-style.c
-Maigre/Maigre_Theme.cs
+libmaigre/maigre-rc-style.c
+Maigre/MaigreStyle.cs
+Maigre/MaigreRcStyle.cs

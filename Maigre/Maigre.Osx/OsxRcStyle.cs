@@ -1,5 +1,5 @@
-// 
-// maigre-mono-bridge.c
+//
+// OsxRcStyle.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -24,39 +24,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <string.h>
-#include <gtk/gtk.h>
+using System;
+using Cairo;
 
-#include "maigre-mono-bridge.h"
-
-MaigreMonoBridge *
-maigre_mono_bridge ()
+namespace Maigre.Osx
 {
-    static MaigreMonoBridge *bridge;
-    static gboolean load_attempted;
-
-    if (load_attempted) {
-        return bridge;
+    public class OsxRcStyle : RcStyle
+    {
+        public OsxRcStyle (IntPtr raw) : base (raw)
+        {
+        }
     }
-
-    load_attempted = TRUE;
-
-    bridge = g_new0 (MaigreMonoBridge, 1);
-
-    bridge->domain = mono_domain_get ();
-
-    if (bridge->domain == NULL) {
-        mono_config_parse (NULL);
-        bridge->domain = mono_jit_init ("maigre-domain");
-    }
-
-    if ((bridge->assembly = mono_domain_assembly_open (
-            bridge->domain, ".run/engines/Maigre.dll")) == NULL ||
-        (bridge->image = mono_assembly_get_image (bridge->assembly)) == NULL) {
-        g_warning ("Could not load Maigre.dll assembly");
-        g_free (bridge);
-        bridge = NULL;
-    }
-
-    return bridge;
 }
+

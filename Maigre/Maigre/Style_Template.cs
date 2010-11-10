@@ -57,10 +57,10 @@ namespace Maigre
         private static ParentVTable parent_vtable;
         public static new GLib.GType GType { get; private set; }
 
-        private static void ConfigureClass (IntPtr vtablePtr, IntPtr styleGetType)
+        private static void ConfigureClass (IntPtr vtablePtr, IntPtr gtype)
         {
             parent_vtable = (ParentVTable)Marshal.PtrToStructure (vtablePtr, typeof (ParentVTable));
-            GType = new GLib.GType (styleGetType);
+            GType = new GLib.GType (gtype);
         }
 
         [StructLayout (LayoutKind.Sequential)]

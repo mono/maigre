@@ -33,7 +33,6 @@
     <CompileTarget>SharedLibrary</CompileTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="maigre-rc-style.c" />
     <Compile Include="maigre-theme-module.c" />
     <Compile Include="maigre-mono-bridge.c" />
   </ItemGroup>

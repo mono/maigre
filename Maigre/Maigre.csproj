@@ -38,6 +38,8 @@
     <Compile Include="Cairo\ContextExtensions.cs" />
     <Compile Include="Cairo\RectangleExtensions.cs" />
     <Compile Include="Maigre.Osx\OsxStyle.cs" />
+    <Compile Include="Maigre.Osx\OsxRcStyle.cs" />
+    <Compile Include="Maigre\ThemeModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Maigre\Style_Template.cs" />
+    <None Include="Maigre\RcStyle_Template.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

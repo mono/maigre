@@ -109,13 +109,14 @@ maigre_style_init (MaigreStyle *maigre)
 
     args[0] = &maigre;
     maigre->mono_object = mono_runtime_invoke (managed_method, NULL, args, NULL);
+    g_object_ref (maigre);
 }
 
 static void
 maigre_style_class_init (MaigreStyleClass *klass)
 {
     MaigreMonoBridge *bridge;
-    MonoMethod *load_parent_vtable_method;
+    MonoMethod *configure_class_method;
     MaigreParentVTable parent_vtable, *parent_vtable_ptr;
     gpointer args[2];
     GType type = maigre_style_get_type ();
@@ -127,7 +128,7 @@ maigre_style_class_init (MaigreStyleClass *klass)
         "Maigre", "Style")) == NULL) {
         g_warning ("Maigre.dll assembly does not contain Maigre.Style");
         return;
-    } else if ((load_parent_vtable_method = mono_class_get_method_from_name (
+    } else if ((configure_class_method = mono_class_get_method_from_name (
         klass->mono_class, "ConfigureClass", 2)) == NULL) {
         g_warning ("Maigre.Style does not contain a ConfigureClass method.");
         return;
@@ -140,7 +141,7 @@ maigre_style_class_init (MaigreStyleClass *klass)
     parent_vtable_ptr = &parent_vtable;
     args[0] = &parent_vtable_ptr;
     args[1] = &type;
-    mono_runtime_invoke (load_parent_vtable_method, NULL, args, NULL);
+    mono_runtime_invoke (configure_class_method, NULL, args, NULL);
 
     % for method in parser.methods:
     GTK_STYLE_CLASS (klass)->${method.native_name} = maigre_style_${method.native_name};

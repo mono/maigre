@@ -1,5 +1,5 @@
-// 
-// maigre-rc-style.c
+//
+// RcStyle.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -24,44 +24,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "maigre-rc-style.h"
-#include "maigre-style.h"
+using System;
 
-struct MaigreRcStyle {
-    GtkRcStyle parent_instance;
-};
-
-struct MaigreRcStyleClass {
-    GtkRcStyleClass parent_class;
-};
-
-G_DEFINE_DYNAMIC_TYPE (MaigreRcStyle, maigre_rc_style, GTK_TYPE_RC_STYLE);
-
-void
-maigre_rc_style_register_types (GTypeModule *module)
+namespace Maigre
 {
-    maigre_rc_style_register_type (module);
-}
+    public class RcStyle : Gtk.RcStyle
+    {
+        protected RcStyle (IntPtr raw) : base (raw)
+        {
+        }
 
-static void
-maigre_rc_style_init (MaigreRcStyle *maigre_rc)
-{
-}
+        private static RcStyle New (IntPtr nativeParent)
+        {
+            return new Maigre.Osx.OsxRcStyle (nativeParent);
+        }
 
-static GtkStyle *
-maigre_rc_style_create_style (GtkRcStyle *rc_style)
-{
-    return GTK_STYLE (g_object_new (MAIGRE_TYPE_STYLE, NULL));
-}
+        public static new GLib.GType GType { get; private set; }
 
-static void
-maigre_rc_style_class_init (MaigreRcStyleClass *klass)
-{
-    GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-    rc_style_class->create_style = maigre_rc_style_create_style;
-}
-
-static void
-maigre_rc_style_class_finalize (MaigreRcStyleClass *klass)
-{
+        private static void ConfigureClass (IntPtr gtype)
+        {
+            GType = new GLib.GType (gtype);
+        }
+    }
 }

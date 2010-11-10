@@ -36,8 +36,9 @@
 G_MODULE_EXPORT void
 theme_init (GTypeModule *module)
 {
-    MonoMethod *init_method;
     MaigreMonoBridge *bridge = maigre_mono_bridge ();
+    MonoClass *klass;
+    MonoMethod *method;
 
     if (bridge == NULL) {
         g_warning ("Maigre failed to initialize. Default internal "
@@ -46,11 +47,26 @@ theme_init (GTypeModule *module)
     }
 
     maigre_rc_style_register_types (module);
+
+    if (bridge != NULL &&
+        (klass = mono_class_from_name (bridge->image, "Maigre", "ThemeModule")) != NULL &&
+        (method = mono_class_get_method_from_name (klass, "Init", 0)) != NULL) {
+        mono_runtime_invoke (method, NULL, NULL, NULL);
+   }
 }
 
 G_MODULE_EXPORT void
 theme_exit ()
 {
+    MaigreMonoBridge *bridge = maigre_mono_bridge ();
+    MonoClass *klass;
+    MonoMethod *method;
+
+    if (bridge != NULL &&
+        (klass = mono_class_from_name (bridge->image, "Maigre", "ThemeModule")) != NULL &&
+        (method = mono_class_get_method_from_name (klass, "Exit", 0)) != NULL) {
+        mono_runtime_invoke (method, NULL, NULL, NULL);
+   }
 }
 
 G_MODULE_EXPORT GtkRcStyle *

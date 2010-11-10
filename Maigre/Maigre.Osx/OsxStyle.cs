@@ -68,5 +68,21 @@ namespace Maigre.Osx
             Cr.Color = ColorExtensions.FromRgba (0x00000005);
             Cr.Stroke ();
         }
+
+        protected override void OnDrawFlatBox ()
+        {
+            Console.WriteLine (Detail);
+            Cr.Rectangle (Shape);
+            switch (Detail) {
+                case "base":
+                    Cr.Color = new Cairo.Color (0, 0, 0);
+                    break;
+                case "cell_even":
+                case "cell_odd":
+                    Cr.Color = new Cairo.Color (1, 0, 0, 0.25);
+                    break;
+            }
+            Cr.Fill ();
+        }
     }
 }
