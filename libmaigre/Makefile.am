@@ -1,6 +1,6 @@
-EXTRA_DIST = maigre-style.c.in
+EXTRA_DIST = maigre-style.template.c libmaigre.cproj
 CLEANFILES = maigre-style.c
-MAINTAINERCLEANFILES = Makefile.in
+MAINTAINERCLEANFILES = Makefile.in libmaigre.pidb libmaigre.md.pc
 
 INCLUDES = \
 	-Wall -ggdb3 -D_FORTIFY_SOURCE=2 \
@@ -22,5 +22,5 @@ libmaigre_la_SOURCES = $(MAIGRE_SRC) maigre-style.c
 libmurrine_la_LDFLAGS = -module -avoid-version -no-undefined
 libmurrine_la_LIBADD = $(MONO_LIBS) $(GTK_LIBS)
 
-maigre-style.c: maigre-style.c.in
+maigre-style.c: maigre-style.template.c
 	@echo "  GEN    $@"; ../maigre-codegen/maigre-codegen.py $< $@

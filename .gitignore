@@ -4,8 +4,23 @@
 *.pidb
 *.so
 *.o
-Makefile
+*.lo
+*.la
 
-libmaigre/maigre-style-overrides.c
-Maigre/Maigre/Theme_Generated.cs
+Makefile
+Makefile.in
+/configure
+/config.*
+/depcomp
+/install-sh
+/aclocal.m4
+/autom4te.cache
+/libtool
+/ltmain.sh
+/missing
+.libs/
+.deps/
 lib/
+
+libmaigre/maigre-style.c
+Maigre/Maigre/Theme.cs

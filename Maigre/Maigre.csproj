@@ -36,26 +36,10 @@
     <Compile Include="Cairo\Corner.cs" />
     <Compile Include="Cairo\ColorExtensions.cs" />
     <Compile Include="Cairo\ContextExtensions.cs" />
-    <Compile Include="Maigre\Theme.cs" />
     <Compile Include="Cairo\RectangleExtensions.cs" />
     <Compile Include="Maigre.Osx\OsxTheme.cs" />
-    <Compile Include="Maigre\Theme_Generated.cs" />
+    <Compile Include="Maigre\Theme_Template.cs" />
   </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" ExecuteTargetName="run" SyncReferences="true">
-          <BuildFilesVar Sync="true" Name="MAIGRE_SOURCES" />
-          <DeployFilesVar />
-          <ResourcesVar />
-          <OthersVar Sync="true" Name="MAIGRE_OTHER" />
-          <GacRefVar Sync="true" Name="REFERENCES" />
-          <AsmRefVar Sync="true" Name="REFERENCES" />
-          <ProjectRefVar Sync="true" Name="REFERENCES" />
-        </MonoDevelop.Autotools.MakefileInfo>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

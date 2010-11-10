@@ -1,5 +1,6 @@
 SUBDIRS = \
-	libmaigre
+	libmaigre \
+	Maigre
 
 EXTRA_DIST = \
 	Maigre.sln

@@ -43,19 +43,4 @@
     <None Include="maigre-style.h" />
     <None Include="maigre-mono-bridge.h" />
   </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile" ParallelProcesses="2">
-          <BuildFilesVar Sync="true" Name="LIBMAIGRE_SOURCES" />
-          <DeployFilesVar />
-          <ResourcesVar />
-          <OthersVar Sync="true" Name="LIBMAIGRE_OTHER" />
-          <GacRefVar />
-          <AsmRefVar />
-          <ProjectRefVar />
-        </MonoDevelop.Autotools.MakefileInfo>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
 </Project>
