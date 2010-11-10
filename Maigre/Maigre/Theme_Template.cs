@@ -112,7 +112,7 @@ namespace Maigre
 
         % for member in parser.get_context_struct_marshallers ():
         % if member.managed_type == 'Gdk.Rectangle':
-            ${member.managed_name} = context.${member.managed_name} == IntPtr.Zero
+            ${member.managed_name} = context.${member.managed_name} != IntPtr.Zero
                 ? (Gdk.Rectangle)Marshal.PtrToStructure (context.${member.managed_name}, typeof (Gdk.Rectangle))
                 : Gdk.Rectangle.Zero;
         % else:
