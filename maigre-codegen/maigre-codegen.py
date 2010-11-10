@@ -40,7 +40,8 @@ def get_managed_type (native_type, is_pointer):
     map = {
         'guint': 'uint',
         'gint': 'int',
-        'gboolean': 'bool'
+        'gboolean': 'bool',
+        'GdkWindow': 'Gdk.Drawable'
     }
 
     if native_type in map:
