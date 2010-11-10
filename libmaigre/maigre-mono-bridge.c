@@ -46,7 +46,7 @@ maigre_mono_bridge ()
 
     if (bridge->domain == NULL) {
         mono_config_parse (NULL);
-        bridge->domain = mono_jit_init (".run/engines/Maigre.dll");
+        bridge->domain = mono_jit_init ("maigre-domain");
     }
 
     if ((bridge->assembly = mono_domain_assembly_open (
