@@ -1,5 +1,5 @@
 // 
-// Theme.cs
+// Style.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -29,43 +29,15 @@ using System.Runtime.InteropServices;
 
 namespace Maigre
 {
-    public abstract class Theme
+    public class Style : Gtk.Style
     {
-        public Theme ()
+        protected Style (IntPtr raw) : base (raw)
         {
         }
 
-        private void ProxyModuleInit ()
+        private static Style New (IntPtr nativeParent)
         {
-            ModuleInit ();
-        }
-
-        protected virtual void ModuleInit ()
-        {
-        }
-
-        private void ProxyModuleExit ()
-        {
-            ModuleExit ();
-        }
-
-        protected virtual void ModuleExit ()
-        {
-        }
-
-        public static Theme Create ()
-        {
-            return new Maigre.Osx.OsxTheme ();
-        }
-
-#region Generated
-
-        [StructLayout (LayoutKind.Sequential)]
-        private struct DrawContext
-        {
-            % for member in parser.context_struct:
-            public ${member.to_managed_string ()};
-            % endfor
+            return new Maigre.Osx.OsxStyle (nativeParent);
         }
 
         [StructLayout (LayoutKind.Sequential)]
@@ -81,14 +53,32 @@ namespace Maigre
             (method.managed_name, ', '.join (method.to_managed_signature ())), 0, 3)}
 
         % endfor
+
+        private static ParentVTable parent_vtable;
+        public static new GLib.GType GType { get; private set; }
+
+        private static void ConfigureClass (IntPtr vtablePtr, IntPtr styleGetType)
+        {
+            parent_vtable = (ParentVTable)Marshal.PtrToStructure (vtablePtr, typeof (ParentVTable));
+            GType = new GLib.GType (styleGetType);
+        }
+
+        [StructLayout (LayoutKind.Sequential)]
+        private struct DrawContext
+        {
+            % for member in parser.context_struct:
+            public ${member.to_managed_string ()};
+            % endfor
+        }
+
         private DrawContext context;
-        private ParentVTable parent_vtable;
 
         protected Cairo.Context Cr { get; private set; }
         protected Cairo.Rectangle Shape { get; private set; }
 
         % for member in sorted (parser.context_struct, \
           key = lambda m: not m.is_custom_marshal):
+        % if not member.managed_type == 'Gtk.Style':
         % if member.is_custom_marshal:
         protected ${member.to_managed_string (True)} { get; private set; }
         % else:
@@ -97,12 +87,8 @@ namespace Maigre
             get { return context.${member.managed_name}; }
         }
         % endif
+        % endif
         % endfor
-
-        private void LoadParentVTable (IntPtr vtablePtr)
-        {
-            parent_vtable = (ParentVTable)Marshal.PtrToStructure (vtablePtr, typeof (ParentVTable));
-        }
 
         private void LoadContext (IntPtr ctxPtr)
         {
@@ -115,7 +101,7 @@ namespace Maigre
             ${member.managed_name} = context.${member.managed_name} != IntPtr.Zero
                 ? (Gdk.Rectangle)Marshal.PtrToStructure (context.${member.managed_name}, typeof (Gdk.Rectangle))
                 : Gdk.Rectangle.Zero;
-        % else:
+        % elif not member.managed_type == 'Gtk.Style':
             ${member.managed_name} = context.${member.managed_name} != IntPtr.Zero
                 ? (${member.managed_type})GLib.Object.GetObject (context.${member.managed_name})
                 : null;
@@ -125,7 +111,7 @@ namespace Maigre
         }
         % for method in parser.methods:
         <% i = 0 %>
-        protected virtual void ${method.managed_name} ()
+        protected virtual void On${method.managed_name} ()
         {
             if (parent_vtable.${method.managed_name} != null) {
                 parent_vtable.${method.managed_name} (
@@ -141,20 +127,18 @@ namespace Maigre
             }
         }
 
-        private void Proxy${method.managed_name} (IntPtr ctxPtr)
+        private void ${method.managed_name} (IntPtr ctxPtr)
         {
             LoadContext (ctxPtr);
 
             using (Cr = Gdk.CairoHelper.Create (Window)) {
                 Cr.Translate (X, Y);
-                ${method.managed_name} ();
+                On${method.managed_name} ();
             }
 
             Cr = null;
         }
         % endfor
-
-#endregion
 
     }
 }

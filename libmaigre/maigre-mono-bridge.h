@@ -38,14 +38,9 @@
 #include <mono/metadata/debug-helpers.h>
 
 typedef struct MaigreMonoBridge {
-    gboolean init_success;
-
     MonoDomain *domain;
     MonoImage *image;
     MonoAssembly *assembly;
-
-    MonoClass *theme_class;
-    MonoObject *theme_object;
 } MaigreMonoBridge;
 
 MaigreMonoBridge *maigre_mono_bridge ();

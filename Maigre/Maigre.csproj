@@ -37,7 +37,7 @@
     <Compile Include="Cairo\ColorExtensions.cs" />
     <Compile Include="Cairo\ContextExtensions.cs" />
     <Compile Include="Cairo\RectangleExtensions.cs" />
-    <Compile Include="Maigre.Osx\OsxTheme.cs" />
+    <Compile Include="Maigre.Osx\OsxStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,7 +49,7 @@
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Maigre\Theme_Template.cs" />
+    <None Include="Maigre\Style_Template.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

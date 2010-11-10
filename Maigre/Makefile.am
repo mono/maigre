@@ -3,19 +3,19 @@ MAIGRE_SOURCES =  \
 	Cairo/ContextExtensions.cs \
 	Cairo/Corner.cs \
 	Cairo/RectangleExtensions.cs \
-	Maigre.Osx/OsxTheme.cs
+	Maigre.Osx/OsxStyle.cs
 
-MAIGRE_TEMPLATE_SOURCES_IN = Maigre/Theme_Template.cs
+MAIGRE_TEMPLATE_SOURCES_IN = Maigre/Style_Template.cs
 
 MAIGRE_TEMPLATE_SOURCES_OUT = \
-	Maigre_Theme.cs
+	Maigre_Style.cs
 
 MAIGRE_SOURCES_BUILD = $(foreach src, $(MAIGRE_SOURCES), $(srcdir)/$(src)) $(MAIGRE_TEMPLATE_SOURCES_OUT)
 
 Maigre.dll: $(MAIGRE_SOURCES_BUILD)
 	@echo "  GMCS   $@"; $(MCS) -out:$@ -target:library -debug -r:Mono.Cairo -r:System.Core $(GTK_SHARP_LIBS) $(MAIGRE_SOURCES_BUILD)
 
-Maigre_Theme.cs: Maigre/Theme_Template.cs $(top_srcdir)/maigre-codegen/maigre-codegen.py
+Maigre_Style.cs: Maigre/Style_Template.cs $(top_srcdir)/maigre-codegen/maigre-codegen.py
 	@echo "  GEN    $@"; $(top_srcdir)/maigre-codegen/maigre-codegen.py $< $@
 
 all: Maigre.dll

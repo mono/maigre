@@ -39,38 +39,24 @@ theme_init (GTypeModule *module)
     MonoMethod *init_method;
     MaigreMonoBridge *bridge = maigre_mono_bridge ();
 
-    if (!bridge->init_success) {
+    if (bridge == NULL) {
         g_warning ("Maigre failed to initialize. Default internal "
             "GtkRcStyle/GtkStyle will be used.");
         return;
     }
 
     maigre_rc_style_register_types (module);
-
-    if ((init_method =
-        mono_class_get_method_from_name (bridge->theme_class,
-            "ProxyModuleInit", 0)) != NULL) {
-        mono_runtime_invoke (init_method, bridge->theme_object, NULL, NULL);
-    }
 }
 
 G_MODULE_EXPORT void
 theme_exit ()
 {
-    MonoMethod *exit_method;
-    MaigreMonoBridge *bridge = maigre_mono_bridge ();
-
-    if (bridge->init_success && (exit_method =
-        mono_class_get_method_from_name (bridge->theme_class,
-            "ProxyModuleExit", 0)) != NULL) {
-        mono_runtime_invoke (exit_method, bridge->theme_object, NULL, NULL);
-    }
 }
 
 G_MODULE_EXPORT GtkRcStyle *
 theme_create_rc_style ()
 {
-    return maigre_mono_bridge ()->init_success
+    return maigre_mono_bridge () != NULL
         ? GTK_RC_STYLE (g_object_new (MAIGRE_TYPE_RC_STYLE, NULL))
         : GTK_RC_STYLE (g_object_new (GTK_TYPE_RC_STYLE, NULL));
 }

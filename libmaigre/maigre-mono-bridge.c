@@ -33,12 +33,15 @@ MaigreMonoBridge *
 maigre_mono_bridge ()
 {
     static MaigreMonoBridge *bridge;
+    static gboolean load_attempted;
 
     MonoMethod *theme_create_method;
 
-    if (bridge != NULL) {
+    if (load_attempted) {
         return bridge;
     }
+
+    load_attempted = TRUE;
 
     bridge = g_new0 (MaigreMonoBridge, 1);
 
@@ -53,28 +56,9 @@ maigre_mono_bridge ()
             bridge->domain, ".run/engines/Maigre.dll")) == NULL ||
         (bridge->image = mono_assembly_get_image (bridge->assembly)) == NULL) {
         g_warning ("Could not load Maigre.dll assembly");
-        return bridge;
+        g_free (bridge);
+        bridge = NULL;
     }
-
-    if ((bridge->theme_class = mono_class_from_name (
-            bridge->image, "Maigre", "Theme")) == NULL) {
-        g_warning ("Maigre.dll assembly does not contain Maigre.Theme");
-        return bridge;
-    }
-
-    if ((theme_create_method = mono_class_get_method_from_name (
-            bridge->theme_class, "Create", 0)) == NULL) {
-        g_warning ("Maigre.Theme does not contain a Create method");
-        return bridge;
-    }
-
-    if ((bridge->theme_object = mono_runtime_invoke (theme_create_method,
-            NULL, NULL, NULL)) == NULL) {
-        g_warning ("Could not create an instance of Maigre.Theme");
-        return bridge;
-    }
-
-    bridge->init_success = TRUE;
 
     return bridge;
 }

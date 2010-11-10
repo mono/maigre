@@ -1,5 +1,5 @@
 // 
-// OsxTheme.cs
+// OsxStyle.cs
 //  
 // Author:
 //   Aaron Bockover <abockover@novell.com>
@@ -29,13 +29,17 @@ using Cairo;
 
 namespace Maigre.Osx
 {
-    public class OsxTheme : Theme
+    public class OsxStyle : Style
     {
-        protected override void DrawBox ()
+        public OsxStyle (IntPtr raw) : base (raw)
+        {
+        }
+
+        protected override void OnDrawBox ()
         {
             switch (Detail) {
                 case "button": DrawButton (); break;
-                default: base.DrawBox (); break;
+                default: base.OnDrawBox (); break;
             }
         }
 
@@ -55,7 +59,7 @@ namespace Maigre.Osx
             Cr.Stroke ();
         }
 
-        protected override void DrawFocus ()
+        protected override void OnDrawFocus ()
         {
             Cr.RoundedRectangle (Shape, 2);
             Cr.Color = ColorExtensions.FromRgba (0x00000011);
