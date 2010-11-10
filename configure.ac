@@ -38,7 +38,7 @@ PKG_CHECK_MODULES(MONO_2_8, mono-2 >= 2.8,
 	[have_mono_2_8=yes], [have_mono_2_8=no])
 if test "x$have_mono_2_8" = xyes; then
 	MONO_CFLAGS=$MONO_2_8_CFLAGS
-	MONO_LIBS=$MONO_2_8_CFLAGS
+	MONO_LIBS=$MONO_2_8_LIBS
 else
 	PKG_CHECK_MODULES(MONO_2_6, mono >= 2.6)
 	MONO_CFLAGS=$MONO_2_6_CFLAGS
